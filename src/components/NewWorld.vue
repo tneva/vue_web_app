@@ -3,8 +3,8 @@
       <p> {{newMsg}} </p>
       <button v-on:click="changeData">Change Message</button>
       <button v-on:click="changeView">Go to HellowWorld</button>
-      <button v-on:click="retrieveStuff">Get Stuff</button>
-      <input v-model="number" placeholder="Give me a number">
+      <button v-on:click="addName">Add Name</button>
+      <input v-model="name" placeholder="What name would you like to add?">
     </div>
 </template>
 <script>
@@ -14,7 +14,7 @@
      data() {
          return {
              newMsg: 'This is my new message',
-             number: 0
+             name
          }
      },
      methods: {
@@ -25,11 +25,12 @@
          changeView() {
              this.$router.push({name: 'HelloWorld'});
          },
-         retrieveStuff() {
-             let url = 'http://0.0.0.0:8080/api/stuff?number=' + this.number;
-             axios.get(url).then((response) => {
-                 console.log(response.data.message);
-                 this.newMsg = response.data.message;
+         addName() {
+             let url = 'http://0.0.0.0:8080/api/visitors';
+             let body = {name: this.name}
+             axios.post(url, body).then((response) => {
+                 console.log(response.data);
+                 this.newMsg = this.name + " has been added to the DB!"
              }).catch((error) => {
                  console.log(error);
              });
